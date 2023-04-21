@@ -3,7 +3,7 @@
 #include <fstream>
 #include <string>
 #include "windows.h"
-#include "headers/Canvas.h"
+#include "../headers/Canvas.h"
 using namespace std;
 
 #define WIDTH 960
@@ -42,6 +42,21 @@ Point3d getMostLeftPoint(vector<Point3d> points)
     return least;
 }
 
+Point3d project_2d_3d(Point3d p) {
+    return Point3d(p.x/p.z,p.y/p.z,z);
+}
+
+Point3d  normalized_to_screen(Point3d p)
+{
+    float x = ((p.x + 1)/2)*WIDTH;
+    float y = ((p.y + 1)/2)*HEIGHT;
+    return Point3d(x,y,p.z);
+}
+
+Point3d project(Point3d p){
+   return normalized_to_screen(project_2d_3d(p));
+}
+
 int main(int argv, char **args)
 {
     Canvas c = Canvas(WIDTH, HEIGHT);
@@ -49,11 +64,11 @@ int main(int argv, char **args)
     c.Render_SDL();
     SDL_Event event;
     float dt;
-    // Cube points
+    // Cube points NORMALIZED
     vector<Point3d> points =
      {
-        Point3d(400, 400, 400), Point3d(600, 400, 400), Point3d(600, 600, 400), Point3d(400, 600, 400),
-        Point3d(400, 400, 600), Point3d(600, 400, 600), Point3d(600, 600, 600), Point3d(400, 600, 600)
+        Point3d(-0.5, -0.5, 1), Point3d(0, -0.5, 1), Point3d(0, 0, 1), Point3d(-0.5, 0, 1),
+        Point3d(-0.5, -0.5, 1.5), Point3d(0, -0.5, 1.5), Point3d(0, 0, 1.5), Point3d(-0.5, 0, 1.5)
         };
     Point3d centroid = Point3d(0, 0, 0);
 
@@ -81,14 +96,18 @@ int main(int argv, char **args)
             p.rotate(x,centroid,angle);
             p.rotate(y,centroid,angle);
             p.rotate(z,centroid,angle);
-            c.draw_circle(p.x, p.y, 5, 1, GREEN, GREEN);
+            // p.z-=0.01;
+            
+            Point3d normalized = normalized_to_screen(project_2d_3d(p));
+            c.draw_circle(normalized.x, normalized.y, 5, 1, GREEN, GREEN);
         }
         // Connect points with lines
         for (int i = 0; i < 4; i++)
         {
-            c.draw_line3d(points[i], points[(i + 1) % 4], RED);
-            c.draw_line3d(points[i + 4], points[((i + 1) % 4) + 4], RED);
-            c.draw_line3d(points[i], points[i + 4], RED);
+            
+            c.draw_line3d(project(points[i]), project(points[(i + 1) % 4]), RED);
+            c.draw_line3d(project(points[i + 4]), project(points[((i + 1) % 4) + 4]), RED);
+            c.draw_line3d(project(points[i]), project(points[i + 4]), RED);
         }
         c.Render_SDL();
         SDL_Delay(30);
