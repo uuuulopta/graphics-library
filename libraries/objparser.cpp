@@ -1,8 +1,37 @@
 #include "../headers/objparser.h"
 #include "../headers/Shapes.h"
 #include "../headers/Canvas.h"
+
+float mapZ(float z,float maxz, float minz){
+    // (z-lz)/(hz-lz)+1
+    return (z - minz)/(maxz-minz) + 1;
+}
+
+/*
+
+minx.... x... maxx   / - minx
+
+0 .... x-minx ... maxx-minxx  / 2 * 
+
+0 ...2(x-minx)  2(maxx-minx) /maxx-minx
+0 2(x-minx)/(maxx-minx) 2 / -1
+-1 (2(x-minx)/(maxx-minx) - 1) 1
+
+
+*/
+float mapXY(float x,float max, float min) {
+    return  (2.f * (x - min) / (max - min)) - 1;
+}
 vector<Line> parseObj(string filepath,Canvas& c)
 {
+    // change this
+    float xmin = 9999;
+    float xmax = -999;
+    float ymin = 9999;
+    float ymax = -99;
+    float zmin = 9999;
+    float zmax = -99;
+
     ifstream file;
     file.open(filepath, ios::in);
     if(!file){
@@ -30,6 +59,24 @@ vector<Line> parseObj(string filepath,Canvas& c)
             }
             points[counter] = stof(line);
             vertices.push_back(Point3d(points[0],points[1],points[2]));
+            if (points[0] > xmax) {
+                xmax = points[0];
+            }
+            if (points[0] < xmin) {
+                xmin = points[0];
+            }
+            if (points[1] > ymax) {
+                ymax = points[1];
+            }
+            if (points[1] < ymin) {
+                ymin = points[1];
+            }
+            if (points[2] > zmax) {
+                zmax = points[2];
+            }
+            if (points[2] < zmin) {
+                zmin = points[2];
+            }
             counter = 0;
             }
          if (line[0] == 'f'){
@@ -60,6 +107,7 @@ vector<Line> parseObj(string filepath,Canvas& c)
     //     cout << endl;
     // }
     vector<Line> lines;
+    cout << "X: " << xmin << " - " << xmax << " Y: " << ymin << " - " << ymax << " Z: " << zmin << " - " << zmax << endl;
     for(vector<int> face: facemap){
        int counter = 0;
        int last;
@@ -69,8 +117,13 @@ vector<Line> parseObj(string filepath,Canvas& c)
                 counter++;
                 continue;
             }
+            
+            
+            
+
             // Line a = c.draw_line(vertices[last].x,vertices[last].y,vertices[p].x,vertices[p].y,1,{255,0,0});
-            Line b = Line(vertices[last].x,vertices[last].y,vertices[p].x,vertices[p].y,{255,0,0},vertices[last].z,vertices[p].z);
+            //cout << vertices.size() << " " << last << " " << p << endl;
+            Line b = Line(mapXY(vertices[last-1].x,xmax,xmin),mapXY(vertices[last-1].y,ymax,ymin),mapXY(vertices[p-1].x,xmax,xmin),mapXY(vertices[p-1].y,ymax,ymin),{255,0,0},mapZ(vertices[last-1].z,zmax,zmin),mapZ(vertices[p-1].z,zmax,zmin));
             lines.push_back(b);
             counter++;
         }
