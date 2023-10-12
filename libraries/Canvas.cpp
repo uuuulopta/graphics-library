@@ -247,7 +247,7 @@ void Canvas::setColour(rgb src,Point3d p) {
         }
 
         memcpy(pixels,rgba,canvas.size()*sizeof(uint32_t));
-        delete rgba;
+        delete[] rgba;
         delete temp;
 
 
@@ -280,7 +280,7 @@ void Canvas::setColour(rgb src,Point3d p) {
         if (SDL_RenderClear(renderer) < 0) throwErr("Failed to clear renderer");
         if (SDL_RenderCopy(renderer, texture, &window_rect, &window_rect) < 0) throwErr("Failed to copy tecture");
         SDL_RenderPresent(renderer);
-        delete pixels;
+        delete[] pixels;
     }
     void Canvas::drawAllCircleSides(float x, float y, Circle circle, int fill, rgb fillColour)
     {
