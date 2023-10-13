@@ -9,4 +9,4 @@ struct objData{
     vector<Line> lines;
 };
 vector<Line>  parseObj(string filepath, Canvas& c);
-
+vector<Triangle>  TparseObj(string filepath, Canvas& c);

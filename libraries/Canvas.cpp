@@ -175,7 +175,7 @@ void Canvas::setColour(rgb src,Point3d p) {
         else bottomY = line2.bottomY;
         if(line1.topY <= line2.topY) topY = line1.topY;
         else topY = line2.topY;
-        for(float y = line2.bottomY; y < line2.topY; y++){
+        for(float y = bottomY; y < topY; y++){
             
             float x1 = line1.xFromY(y);
             float x2 = line2.xFromY(y);
@@ -212,14 +212,16 @@ void Canvas::setColour(rgb src,Point3d p) {
     }
     Triangle Canvas::draw_triangle(Line a, Line b, Line c,int edgeThickness , rgb colour, int fill, rgb fillColour){
 
+        Triangle trig =  Triangle(a,b,c);
         if(fill){
-            fill_between_lines(a,b,fillColour);
-            fill_between_lines(a,c,fillColour);
+            vector<Line> lines = trig.getLongestEdge();
+            fill_between_lines(lines[0],lines[1],fillColour);
+            fill_between_lines(lines[0],lines[2],fillColour);
         }
         draw_line(a,edgeThickness,colour);
         draw_line(b,edgeThickness,colour);
         draw_line(c,edgeThickness,colour);
-        return Triangle(a,b,c);
+        return trig;
     }
 
     void Canvas::translate(Triangle &triangle,float x,float y,int fill,rgb colour){

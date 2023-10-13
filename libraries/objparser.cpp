@@ -22,7 +22,11 @@ minx.... x... maxx   / - minx
 float mapXY(float x,float max, float min) {
     return  (2.f * (x - min) / (max - min)) - 1;
 }
-vector<Line> parseObj(string filepath,Canvas& c)
+
+Point3d mapPoint3d(Point3d p,int xmax, int xmin,int ymax, int ymin,int zmax, int zmin) {
+    return Point3d(mapXY(p.x,xmax,xmin),mapXY(p.y,ymax,ymin),mapZ(p.z,zmax,zmin));
+}
+vector<Triangle> TparseObj(string filepath,Canvas& c)
 {
     // change this
     float xmin = 9999;
@@ -59,24 +63,12 @@ vector<Line> parseObj(string filepath,Canvas& c)
             }
             points[counter] = stof(line);
             vertices.push_back(Point3d(points[0],points[1],points[2]));
-            if (points[0] > xmax) {
-                xmax = points[0];
-            }
-            if (points[0] < xmin) {
-                xmin = points[0];
-            }
-            if (points[1] > ymax) {
-                ymax = points[1];
-            }
-            if (points[1] < ymin) {
-                ymin = points[1];
-            }
-            if (points[2] > zmax) {
-                zmax = points[2];
-            }
-            if (points[2] < zmin) {
-                zmin = points[2];
-            }
+            if (points[0] > xmax) { xmax = points[0]; }
+            if (points[0] < xmin) { xmin = points[0]; }
+            if (points[1] > ymax) { ymax = points[1]; }
+            if (points[1] < ymin) { ymin = points[1]; }
+            if (points[2] > zmax) { zmax = points[2]; }
+            if (points[2] < zmin) { zmin = points[2]; }
             counter = 0;
             }
          if (line[0] == 'f'){
@@ -97,40 +89,22 @@ vector<Line> parseObj(string filepath,Canvas& c)
             counter = 0;
             }       
     }
-    // for(Point3d& p: vertices){
-    // cout << p.x << " " << p.y << " " << p.z << endl;
-    // }
-    // for(vector<int> face: facemap){
-    //     for(int p: face){
-    //         cout << p << " ";
-    //     }
-    //     cout << endl;
-    // }
+    for (Point3d& vert: vertices){
+        vert = mapPoint3d(vert,  xmax,  xmin,  ymax,  ymin,  zmax,  zmin);
+    }
     vector<Line> lines;
+    vector<Triangle> trigs;
     cout << "X: " << xmin << " - " << xmax << " Y: " << ymin << " - " << ymax << " Z: " << zmin << " - " << zmax << endl;
     for(vector<int> face: facemap){
-       int counter = 0;
-       int last;
-        for(int p: face){
-            if(counter == 0){
-                last = p;
-                counter++;
-                continue;
-            }
-            
-            
-            
-
-            // Line a = c.draw_line(vertices[last].x,vertices[last].y,vertices[p].x,vertices[p].y,1,{255,0,0});
-            //cout << vertices.size() << " " << last << " " << p << endl;
-            Line b = Line(mapXY(vertices[last-1].x,xmax,xmin),mapXY(vertices[last-1].y,ymax,ymin),mapXY(vertices[p-1].x,xmax,xmin),mapXY(vertices[p-1].y,ymax,ymin),{255,0,0},mapZ(vertices[last-1].z,zmax,zmin),mapZ(vertices[p-1].z,zmax,zmin));
-            lines.push_back(b);
-            counter++;
-        }
-    }
-    return lines;
-    // c.draw_line(100,100,200,200,4,{255,0,0});
-
-
+       // p1 -> p2
+       Line a = Line(vertices[face[0]-1].x,vertices[face[0]-1].y,vertices[face[1]-1].x,vertices[face[1]-1].y,{0,0,0},vertices[face[0]-1].z,vertices[face[1]-1].z);
+       // p2 -> -3
+       Line b = Line(vertices[face[1]-1].x,vertices[face[1]-1].y,vertices[face[2]-1].x,vertices[face[2]-1].y,{0,0,0},vertices[face[1]-1].z,vertices[face[2]-1].z);
+       // p1 -> p3
+       Line c = Line(vertices[face[0]-1].x,vertices[face[0]-1].y,vertices[face[2]-1].x,vertices[face[2]-1].y,{0,0,0},vertices[face[0]-1].z,vertices[face[2]-1].z);
+       Triangle trig = Triangle(a,b,c);
+       trigs.push_back(trig);
+          }
+    return trigs;
 
 }
