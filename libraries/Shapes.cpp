@@ -26,14 +26,14 @@ void Point3d::rotate(Axis3d axis, Point3d origin, float angle)
     float cosangle = cos(angle);
     if(axis == 'x'){
         x = x;
-        float yn = y * cos(angle) - z * sin(angle);
-        float zn = y * sin(angle) + z * cos(angle);
+        float yn = y * cosangle - z * sinangle;
+        float zn = y * sinangle + z * cosangle;
         y = yn;
         z = zn;
     }
     else if(axis == 'y'){
-        float xn = x * cos(angle) + z * sin(angle);
-        float zn = z * cos(angle) - x * sin(angle);
+        float xn = x * cosangle + z * sinangle;
+        float zn = z * cosangle - x * sinangle;
         x = xn;
         z = zn;
 
@@ -175,7 +175,7 @@ float x3;
 // TODO error here
 if(x1 != b.x1 && x2 != b.x1)  x3 = b.x1;
 else if(x1 != b.x2 && x2 != b.x2)  x3 = b.x2;
-else throwErr("x3 is undefined"); 
+//else throwErr("x3 is undefined"); 
 float y1 = a.y1;
 float y2 = a.y2;
 float y3;
