@@ -22,7 +22,9 @@ minx.... x... maxx   / - minx
 float mapXY(float x,float max, float min) {
     return  (2.f * (x - min) / (max - min)) - 1;
 }
-
+/* 
+ * Normalises the points between X -1 - 1 Y -1 - 1 Z 1 - 2
+ * */
 Point3d mapPoint3d(Point3d p,int xmax, int xmin,int ymax, int ymin,int zmax, int zmin) {
     return Point3d(mapXY(p.x,xmax,xmin),mapXY(p.y,ymax,ymin),mapZ(p.z,zmax,zmin));
 }
@@ -94,7 +96,7 @@ vector<Triangle> TparseObj(string filepath,Canvas& c)
     }
     vector<Line> lines;
     vector<Triangle> trigs;
-    cout << "X: " << xmin << " - " << xmax << " Y: " << ymin << " - " << ymax << " Z: " << zmin << " - " << zmax << endl;
+    cout << "obj min/max values X: " << xmin << " - " << xmax << " Y: " << ymin << " - " << ymax << " Z: " << zmin << " - " << zmax << endl;
     for(vector<int> face: facemap){
        // p1 -> p2
        Line a = Line(vertices[face[0]-1].x,vertices[face[0]-1].y,vertices[face[1]-1].x,vertices[face[1]-1].y,{0,0,0},vertices[face[0]-1].z,vertices[face[1]-1].z);
