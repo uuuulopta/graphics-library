@@ -1,1 +1,0 @@
-g++ -o main.exe main.cpp libraries/*.cpp -I SDL/Include -L SDL/lib -lmingw32 -lSDL2main -lSDL2 -Wall -Wno-unused-but-set-variable
