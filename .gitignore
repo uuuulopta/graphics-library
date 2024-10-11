@@ -1,2 +1,6 @@
 SDL/
 SDL2.dll
+.*
+*.exe
+!/.gitignore
+
