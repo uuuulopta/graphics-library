@@ -15,7 +15,7 @@ const int HEIGHT = 800;
 bool init(SDL_Window **window, SDL_Renderer **renderer);
 void close(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font);
 
-int main(int argc, char *args[]) {
+int main(int argc, char* argv[]){
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
   TTF_Font *font = nullptr;
@@ -40,11 +40,10 @@ int main(int argc, char *args[]) {
   bool quit = false;
   SDL_Event e;
   int selectedItem = 0;
-  const int totalItems = 9;
+  const int totalItems = 6;
   string menuItems[totalItems] = {
-      "Triangle",        "Cube orhtogonal", "Cube dots",
-      "Cube projection", "Cup.obj",         "Cube.obj",
-      "Gingerbread.obj", "Teapot.obj",      "Izlaz"};
+     "Transformations 2D", "Transformations 3D",
+       "Cube.obj","Cup.obj", "Teapot.obj","Izlaz"};
 
   while (!quit) {
     while (SDL_PollEvent(&e) != 0) {
@@ -62,30 +61,21 @@ int main(int argc, char *args[]) {
           cout << menuItems[selectedItem] << endl;
           switch (selectedItem) {
           case 0:
-            Trianglex(WIDTH, HEIGHT, renderer, font).main();
+            transformations_2d(WIDTH, HEIGHT, renderer, font).main();
             break;
           case 1:
-            CubeOrtho(WIDTH, HEIGHT, renderer, font).main();
-            break;
-          case 2:
-            CubeDots(WIDTH, HEIGHT, renderer, font).main();
-            break;
-          case 3:
             CubeProjection(WIDTH, HEIGHT, renderer, font).main();
             break;
-          case 4:
-            Obj("assets/solja.obj", WIDTH, HEIGHT, renderer, font).main();
-            break;
-          case 5:
+        case 2:
             Obj("assets/cube.obj", WIDTH, HEIGHT, renderer, font).main();
             break;
-          case 6:
-            Obj("assets/woody.obj", WIDTH, HEIGHT, renderer, font).main();
+          case 3:
+            Obj("assets/solja.obj", WIDTH, HEIGHT, renderer, font).main();
             break;
-          case 7:
+          case 4:
             Obj("assets/teapot.obj", WIDTH, HEIGHT, renderer, font).main();
             break;
-          case 8:
+          case 5:
             close(window, renderer, font);
             return 0;
           }

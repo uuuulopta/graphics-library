@@ -9,6 +9,22 @@ using namespace std;
 void throwErr(const char *text) { cerr << text << endl; }
 rgb colour;
 
+
+
+v2::v2(){}
+v2::v2(float x, float y){
+  this->x = x;
+  this->y = y;
+}
+
+v2 v3::tov2(){
+  return v2{x,y};
+}
+void v2::shear(float xShear,float yShear){
+  x += yShear * y;
+  y += xShear * x;
+}
+
 v3::v3() {}
 v3::v3(v2 p, float z) : v3(p.x, p.y, z) {};
 v3::v3(float x, float y, float z) {
@@ -31,6 +47,30 @@ void v3::rotate2dPoint(v2 point, float angle) {
                     sinAngle * (this->y - point.y) + point.x);
   this->y = (float)(sinAngle * (this->x - point.x) +
                     cosAngle * (this->y - point.y) + point.y);
+}
+
+
+/*  If axis == x: s1 = Sy s2= Sz
+ *
+ *  If axis == y: s1 = Sx s2= Sz
+ *
+ *  If axis == z: s1 = Sx s2= Sy
+ */
+void v3::shear(Axis3d axis,float s1, float s2){
+  if(axis == 'x'){
+    y += s1 * x;
+    z += s2 * x;
+  }
+  if(axis == 'y'){
+    x += s1 * y;
+    z += s2 * y;
+  }
+  if(axis == 'z'){
+    x += s1 * z;
+    x += s2 * z;
+    
+  }
+
 }
 
 // Rotate a 3d point
@@ -86,8 +126,16 @@ void Line::calculate() {
     rightEdge = p2.x;
     leftEdge = p1.x;
   }
+  if (p1.z > p2.z) {
+    deepZ = p1.z;
+    shallowZ = p2.z;
+  } else {
+    deepZ = p2.z;
+    shallowZ = p1.z;
+  }
+
   if (p1.x != p2.x) {
-    m = ((double)p2.y - p1.y) / ((double)p2.x - p1.x);
+    m = ((float)p2.y - p1.y) / ((float)p2.x - p1.x);
     b = p1.y - m * p1.x;
   }
 }
@@ -199,10 +247,11 @@ Triangle::Triangle(v3 a, v3 b, v3 c, rgb colour) {
 void Triangle::setCenter() {
   this->centerX = (p1.x + p2.x + p3.x) / 3;
   this->centerY = (p1.y + p2.y + p3.y) / 3;
+  this->centerZ = (p1.z + p2.z + p3.z) / 3;
 }
 
 // Returns a vector of lines where the first is the longest.
-vector<Line> Triangle::getLongestEdge() {
+vector<Line> Triangle::getLongestEdge() const {
   vector<Line> lines = {a, b, c};
   for (int i = 0; i < 3; i++) {
     if (lines[i].height > lines[0].height)
@@ -216,6 +265,12 @@ void Triangle::translate(float x, float y, float z) {
   p3.translate(x, y, z);
   createLinesFromPoints(a.colour);
   setCenter();
+}
+
+vector<v3> Triangle::getPoints() { return vector<v3>{p1, p2, p3}; }
+v3 Triangle::getCenter() {
+  setCenter();
+  return v3{centerX, centerY, centerZ};
 }
 
 void Triangle::rotateAroundPoint3d(Axis3d axis, v3 origin, float angle) {

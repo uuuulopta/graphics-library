@@ -3,4 +3,5 @@ SDL2.dll
 .*
 *.exe
 !/.gitignore
+obj/
 

@@ -1,4 +1,5 @@
 #include <SDL2/SDL_keyboard.h>
+#include <SDL2/SDL_keycode.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_scancode.h>
 #include <SDL2/SDL_stdinc.h>
@@ -27,22 +28,32 @@ void CubeProjection::main() {
   SDL_Event event;
   float dt;
   // Cube points NORMALIZED
-  vector<v3> points = {v3(-0.5, -0.5, 1), v3(0, -0.5, 1),      v3(0, 0, 1),
+  vector<v3> original = {v3(-0.5, -0.5, 1), v3(0, -0.5, 1),      v3(0, 0, 1),
                        v3(-0.5, 0, 1),    v3(-0.5, -0.5, 1.5), v3(0, -0.5, 1.5),
                        v3(0, 0, 1.5),     v3(-0.5, 0, 1.5)};
+
+  for (v3 &p : original) {
+    p.x += 0.25;
+    p.y += 0.25;
+    p.z += 0.2f;
+  }
+  vector<v3> points = original;
   float angle = 0.023;
   bool quit = false;
-  // for (v3 &p : points) {
-  //   p.z += 1;
-  // }
+
+  float fov = 45.0f * (M_PI / 180.0f);
+  float aspectRatio = 1;
+  float zNear = 1.f;
+  float zFar = 10.0f;
+ 
   // Animate
   while (!quit) {
 
     v3 centroid = v3(0, 0, 0);
-
+    v3 camera = v3(0,0.5,-1); 
     // Calculate centroid of the cube (the cube will rotate around it's center)
     for (v3 &p : points) {
-      cout << (p.x) << " " << (p.y) << " " << p.z << endl;
+      // cout << (p.x) << " " << (p.y) << " " << p.z << endl;
       centroid.x += p.x;
       centroid.y += p.y;
       centroid.z += p.z;
@@ -52,8 +63,9 @@ void CubeProjection::main() {
     centroid.z /= 8;
     c.clear();
     SDL_PollEvent(&event);
-    int counter = 0;
+    bool bf = false;
     const Uint8 *state = SDL_GetKeyboardState(nullptr);
+    vector<v3> pointsPre = points;
     for (v3 &p : points) {
       if (state[SDL_SCANCODE_X]) {
         p.rotate(x, centroid, angle);
@@ -73,19 +85,37 @@ void CubeProjection::main() {
         p.y += 0.01;
       } else if (state[SDL_SCANCODE_S]) {
         p.y -= 0.01;
+      } else if (state[SDL_SCANCODE_R]) {
+        points = original;
+        bf = true;
+        break;
+      } else if (state[SDL_SCANCODE_G]) {
+        p.shear(Axis3d::y, 0.01, 0.01);
+      }else if (state[SDL_SCANCODE_H]) {
+        p.shear(Axis3d::y, -0.01, -0.01);
+      } else if (state[SDL_SCANCODE_COMMA]) {
+        p = p*1.01;
+        cout << p << endl;
+      } else if (state[SDL_SCANCODE_PERIOD]) {
+        p = p/1.01;
+        cout << p << endl;
       }
-      v3 normalized = Utils::normalized_to_screen(Utils::project_2d_3d(p));
+
+      // if(p.z < 1.1f) {
+      //   points = pointsPre;
+      //   break;
+      // }
+      if(bf) break;
+      // v3 normalized = Utils::normalized_to_screen(Utils::project_2d_3d(p));
+      v3 normalized = Utils::projectMatrix(p,  fov,  aspectRatio,  zNear,  zFar);
       c.draw_circle(normalized.x, normalized.y, 5, 1, GREEN, GREEN);
     }
+      if(bf) continue;
     // Connect points with lines
     for (int i = 0; i < 4; i++) {
-
-      c.draw_line3d(Utils::project(points[i]),
-                    Utils::project(points[(i + 1) % 4]), RED);
-      c.draw_line3d(Utils::project(points[i + 4]),
-                    Utils::project(points[((i + 1) % 4) + 4]), RED);
-      c.draw_line3d(Utils::project(points[i]), Utils::project(points[i + 4]),
-                    RED);
+      c.draw_line3d_matrix((points[i]), (points[(i + 1) % 4]), RED,fov, aspectRatio, zNear, zFar);
+      c.draw_line3d_matrix((points[i + 4]), (points[((i + 1) % 4) + 4]), RED,fov, aspectRatio, zNear, zFar);
+      c.draw_line3d_matrix((points[i]), (points[i + 4]), RED,fov, aspectRatio, zNear, zFar);
     }
     c.Render_SDL();
     runBeforeRender(quit);

@@ -13,7 +13,7 @@
 float mapZ(float z, float maxz, float minz) {
   // (z-lz)/(hz-lz)+1
   if (maxz == minz)
-    return 0;
+    return 1;
   // return 1 + ((z - minz) * 2) / (maxz - minz);
   // return (z - minz) / (maxz - minz) + 1;
   return z - (minz + (maxz - minz) / 2);
