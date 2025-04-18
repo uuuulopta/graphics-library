@@ -2,6 +2,7 @@ SDL/
 SDL2.dll
 .*
 *.exe
+menu*
 !/.gitignore
 obj/
 
