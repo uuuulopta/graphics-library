@@ -15,7 +15,7 @@ const int HEIGHT = 800;
 bool init(SDL_Window **window, SDL_Renderer **renderer);
 void close(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font);
 
-int main(int argc, char* argv[]){
+int main(int argc, char *argv[]) {
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
   TTF_Font *font = nullptr;
@@ -41,9 +41,9 @@ int main(int argc, char* argv[]){
   SDL_Event e;
   int selectedItem = 0;
   const int totalItems = 6;
-  string menuItems[totalItems] = {
-     "Transformations 2D", "Transformations 3D",
-       "Cube.obj","Cup.obj", "Teapot.obj","Izlaz"};
+  string menuItems[totalItems] = {"Transformations 2D", "Transformations 3D",
+                                  "Cube.obj",           "Cup.obj",
+                                  "Teapot.obj",         "Izlaz"};
 
   while (!quit) {
     while (SDL_PollEvent(&e) != 0) {
@@ -66,7 +66,7 @@ int main(int argc, char* argv[]){
           case 1:
             CubeProjection(WIDTH, HEIGHT, renderer, font).main();
             break;
-        case 2:
+          case 2:
             Obj("assets/cube.obj", WIDTH, HEIGHT, renderer, font).main();
             break;
           case 3:

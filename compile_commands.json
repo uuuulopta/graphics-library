@@ -1,0 +1,197 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/menu.o",
+      "menu.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/menu.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/menu.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/libraries/Canvas.o",
+      "libraries/Canvas.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/libraries/Canvas.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/libraries/Canvas.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/libraries/Example.o",
+      "libraries/Example.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/libraries/Example.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/libraries/Example.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/libraries/objparser.o",
+      "libraries/objparser.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/libraries/objparser.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/libraries/objparser.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/libraries/Shapes.o",
+      "libraries/Shapes.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/libraries/Shapes.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/libraries/Shapes.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/libraries/Utils.o",
+      "libraries/Utils.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/libraries/Utils.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/libraries/Utils.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/2d_transformations.o",
+      "examples/2d_transformations.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/2d_transformations.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/2d_transformations.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/3d_transformations.o",
+      "examples/3d_transformations.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/3d_transformations.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/3d_transformations.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/cube_dots.o",
+      "examples/cube_dots.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/cube_dots.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/cube_dots.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/cube_ortho.o",
+      "examples/cube_ortho.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/cube_ortho.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/cube_ortho.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/cube_projection.o",
+      "examples/cube_projection.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/cube_projection.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/cube_projection.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/obj.o",
+      "examples/obj.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/obj.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/obj.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/clang++",
+      "-g",
+      "-O0",
+      "-Wall",
+      "-c",
+      "-o",
+      "obj/examples/Triangle.o",
+      "examples/Triangle.cpp"
+    ],
+    "directory": "/cdrive/Projects/graphic-thing",
+    "file": "/cdrive/Projects/graphic-thing/examples/Triangle.cpp",
+    "output": "/cdrive/Projects/graphic-thing/obj/examples/Triangle.o"
+  }
+]

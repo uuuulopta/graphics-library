@@ -3,6 +3,7 @@ SDL2.dll
 .*
 *.exe
 menu*
+!*.cpp
 !/.gitignore
 obj/
 
