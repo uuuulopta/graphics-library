@@ -4,6 +4,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <string>
+
 using namespace std;
 
 const int WIDTH = 800;
@@ -16,6 +17,9 @@ bool init(SDL_Window **window, SDL_Renderer **renderer);
 void close(SDL_Window *window, SDL_Renderer *renderer, TTF_Font *font);
 
 int main(int argc, char *argv[]) {
+#ifndef DEBUG
+  std::cout.setstate(std::ios_base::failbit);
+#endif
   SDL_Window *window = nullptr;
   SDL_Renderer *renderer = nullptr;
   TTF_Font *font = nullptr;
