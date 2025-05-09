@@ -62,12 +62,31 @@ public:
   void main() override;
 };
 
-enum Slide3D {Translation=1,Rotation,Scaling,ShearingX,ShearingY};
+class TranslateScale2d : Example {
+public:
+  using Example::Example;
+  void main() override;
+};
+
+class rotate2d : Example {
+public:
+  using Example::Example;
+  void main() override;
+};
+
+class shear2d : Example {
+public:
+  using Example::Example;
+  void main() override;
+};
+
+enum Slide3D { Translation = 1, Rotation, Scaling, ShearingX, ShearingY };
 class transformations_3d : Example {
 public:
   using Example::Example;
   void main() override;
-  void drawCordSystem(vector<v3> xAxis, vector<v3> yAxis,vector<v3> zAxis,Canvas &c,float scale);
+  void drawCordSystem(vector<v3> xAxis, vector<v3> yAxis, vector<v3> zAxis,
+                      Canvas &c, float scale);
   const int SLIDES_COUNT3D = 5;
   Slide3D nextSlide(Slide3D current);
   Slide3D lastSlide(Slide3D current);

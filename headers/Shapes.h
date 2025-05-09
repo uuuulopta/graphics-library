@@ -22,7 +22,7 @@ struct v2 {
   v2 operator+(const float n) const { return v2(x + n, y + n); }
   v2 operator/(const float n) const { return v2(x / n, y / n); }
   v2 operator*(const float n) const { return v2(x * n, y * n); }
-  v2 negate(){
+  v2 negate() {
     x = -x;
     y = -y;
     return *this;
@@ -34,20 +34,19 @@ struct v2 {
   void rotate2dPoint(v2 point, float angle) {
     double cosAngle = cos(angle);
     double sinAngle = sin(angle);
-    this->x = (float)(cosAngle * (this->x - point.x) -
-      sinAngle * (this->y - point.y) + point.x);
-    this->y = (float)(sinAngle * (this->x - point.x) +
-      cosAngle * (this->y - point.y) + point.y);
+    float newX = (float)(cosAngle * (this->x - point.x) -
+                         sinAngle * (this->y - point.y) + point.x);
+    float newY = (float)(sinAngle * (this->x - point.x) +
+                         cosAngle * (this->y - point.y) + point.y);
+    this->x = newX;
+    this->y = newY;
   }
-  void shear(float xShear,float yShear);
+  void shear(float xShear, float yShear);
 };
 
 enum Axis3d { x = 'x', y = 'y', z = 'z' };
-class v3 {
-  friend class Line;
-  friend class Canvas;
+struct v3 {
 
-public:
   float x, y, z;
   v3(float x, float y, float z);
   v3(v2 p, float z = 1);
@@ -55,25 +54,20 @@ public:
   void translate(float x, float y, float z);
   void rotate(Axis3d axis, v3 origin, float angle);
   void rotate2dPoint(v2 point, float angle);
-/*  If axis == x: s1 = Sy s2= Sz
- *
- *  If axis == y: s1 = Sx s2= Sz
- *
- *  If axis == z: s1 = Sx s2= Sy
- */
-  void shear(Axis3d axis,float s1, float s2);
+  /*  If axis == x: s1 = Sy s2= Sz
+   *
+   *  If axis == y: s1 = Sx s2= Sz
+   *
+   *  If axis == z: s1 = Sx s2= Sy
+   */
+  void shear(Axis3d axis, float s1, float s2);
   v2 tov2();
   bool operator==(const v3 &v) { return (x == v.x && y == v.y && z == v.z); }
   v3 operator+(const v3 &v) const { return v3(x + v.x, y + v.y, z + v.z); }
   v3 operator-(const v3 &v) const { return v3(x - v.x, y - v.y, z - v.z); }
   v3 operator-(const float n) const { return v3(x - n, y - n, z - n); }
   v3 operator+(const float n) const { return v3(x + n, y + n, z + n); }
-  v3 operator/(const float n) const {
-    float zVal = z / n;
-    // if ( zVal < 1 )
-    //   zVal = 1;
-    return v3(x / n, y / n, zVal); 
-  }
+  v3 operator/(const float n) const { return v3(x / n, y / n, z / n); }
   v3 operator*(const float n) const { return v3(x * n, y * n, z * n); }
   friend ostream &operator<<(ostream &os, const v3 &v3) {
     std::cout << v3.x << " " << v3.y << " " << v3.z;
@@ -90,7 +84,6 @@ public:
   float topY, bottomY, rightEdge, leftEdge, deepZ, shallowZ, height;
   v3 p1;
   v3 p2;
-  void calculate();
   void translate(float x, float y, float z);
   rgb colour;
   double m, b;

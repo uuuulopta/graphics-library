@@ -9,18 +9,14 @@ using namespace std;
 void throwErr(const char *text) { cerr << text << endl; }
 rgb colour;
 
-
-
-v2::v2(){}
-v2::v2(float x, float y){
+v2::v2() {}
+v2::v2(float x, float y) {
   this->x = x;
   this->y = y;
 }
 
-v2 v3::tov2(){
-  return v2{x,y};
-}
-void v2::shear(float xShear,float yShear){
+v2 v3::tov2() { return v2{x, y}; }
+void v2::shear(float xShear, float yShear) {
   x += yShear * y;
   y += xShear * x;
 }
@@ -49,28 +45,25 @@ void v3::rotate2dPoint(v2 point, float angle) {
                     cosAngle * (this->y - point.y) + point.y);
 }
 
-
 /*  If axis == x: s1 = Sy s2= Sz
  *
  *  If axis == y: s1 = Sx s2= Sz
  *
  *  If axis == z: s1 = Sx s2= Sy
  */
-void v3::shear(Axis3d axis,float s1, float s2){
-  if(axis == 'x'){
+void v3::shear(Axis3d axis, float s1, float s2) {
+  if (axis == 'x') {
     y += s1 * x;
     z += s2 * x;
   }
-  if(axis == 'y'){
+  if (axis == 'y') {
     x += s1 * y;
     z += s2 * y;
   }
-  if(axis == 'z'){
+  if (axis == 'z') {
     x += s1 * z;
     x += s2 * z;
-    
   }
-
 }
 
 // Rotate a 3d point
@@ -105,41 +98,7 @@ void v3::rotate(Axis3d axis, v3 origin, float angle) {
 double m, b;
 Line::Line() {};
 Line::Line(v2 p1, v2 p2, rgb colour) : Line(v3(p1), v3(p2), colour) {};
-Line::Line(v3 p1, v3 p2, rgb colour) : p1(p1), p2(p2) {
-  this->colour = colour;
-  calculate();
-}
-void Line::calculate() {
-
-  height = abs(p2.y - p1.y);
-  if (p1.y > p2.y) {
-    topY = p1.y;
-    bottomY = p2.y;
-  } else {
-    topY = p2.y;
-    bottomY = p1.y;
-  }
-  if (p1.x > p2.x) {
-    rightEdge = p1.x;
-    leftEdge = p2.x;
-  } else {
-    rightEdge = p2.x;
-    leftEdge = p1.x;
-  }
-  if (p1.z > p2.z) {
-    deepZ = p1.z;
-    shallowZ = p2.z;
-  } else {
-    deepZ = p2.z;
-    shallowZ = p1.z;
-  }
-
-  if (p1.x != p2.x) {
-    m = ((float)p2.y - p1.y) / ((float)p2.x - p1.x);
-    b = p1.y - m * p1.x;
-  }
-}
-// Returns integer x from a given y position on a line.
+Line::Line(v3 p1, v3 p2, rgb colour) : p1(p1), p2(p2) { this->colour = colour; }
 float Line::xFromY(float y) {
   // if division by 0
   // y = mx + b => y = b
@@ -214,7 +173,6 @@ void Line::scale(float scaleX, float scaleY) {
   p2.x = p2.x * scaleX;
   p1.y = p1.y * scaleY;
   p2.y = p2.y * scaleY;
-  calculate();
 }
 
 Triangle::Triangle(Line a, Line b, Line c, rgb colour) {

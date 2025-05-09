@@ -61,7 +61,8 @@ int main(int argc, char *argv[]) {
           cout << menuItems[selectedItem] << endl;
           switch (selectedItem) {
           case 0:
-            transformations_2d(WIDTH, HEIGHT, renderer, font).main();
+            // TranslateScale2d(WIDTH, HEIGHT, renderer, font).main();
+            shear2d(WIDTH, HEIGHT, renderer, font).main();
             break;
           case 1:
             CubeProjection(WIDTH, HEIGHT, renderer, font).main();

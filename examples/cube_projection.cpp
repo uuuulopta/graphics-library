@@ -28,9 +28,9 @@ void CubeProjection::main() {
   SDL_Event event;
   float dt;
   // Cube points NORMALIZED
-  vector<v3> original = {v3(-0.5, -0.5, 1), v3(0, -0.5, 1),      v3(0, 0, 1),
-                       v3(-0.5, 0, 1),    v3(-0.5, -0.5, 1.5), v3(0, -0.5, 1.5),
-                       v3(0, 0, 1.5),     v3(-0.5, 0, 1.5)};
+  vector<v3> original = {
+      v3(-0.5, -0.5, 1),   v3(0, -0.5, 1),   v3(0, 0, 1),   v3(-0.5, 0, 1),
+      v3(-0.5, -0.5, 1.5), v3(0, -0.5, 1.5), v3(0, 0, 1.5), v3(-0.5, 0, 1.5)};
 
   for (v3 &p : original) {
     p.x += 0.25;
@@ -45,12 +45,12 @@ void CubeProjection::main() {
   float aspectRatio = 1;
   float zNear = 1.f;
   float zFar = 10.0f;
- 
+
   // Animate
   while (!quit) {
 
     v3 centroid = v3(0, 0, 0);
-    v3 camera = v3(0,0.5,-1); 
+    v3 camera = v3(0, 0.5, -1);
     // Calculate centroid of the cube (the cube will rotate around it's center)
     for (v3 &p : points) {
       // cout << (p.x) << " " << (p.y) << " " << p.z << endl;
@@ -91,13 +91,13 @@ void CubeProjection::main() {
         break;
       } else if (state[SDL_SCANCODE_G]) {
         p.shear(Axis3d::y, 0.01, 0.01);
-      }else if (state[SDL_SCANCODE_H]) {
+      } else if (state[SDL_SCANCODE_H]) {
         p.shear(Axis3d::y, -0.01, -0.01);
       } else if (state[SDL_SCANCODE_COMMA]) {
-        p = p*1.01;
+        p = p * 1.01;
         cout << p << endl;
       } else if (state[SDL_SCANCODE_PERIOD]) {
-        p = p/1.01;
+        p = p / 1.01;
         cout << p << endl;
       }
 
@@ -105,17 +105,22 @@ void CubeProjection::main() {
       //   points = pointsPre;
       //   break;
       // }
-      if(bf) break;
+      if (bf)
+        break;
       // v3 normalized = Utils::normalized_to_screen(Utils::project_2d_3d(p));
-      v3 normalized = Utils::projectMatrix(p,  fov,  aspectRatio,  zNear,  zFar);
+      v3 normalized = Utils::projectMatrix(p, fov, aspectRatio, zNear, zFar);
       c.draw_circle(normalized.x, normalized.y, 5, 1, GREEN, GREEN);
     }
-      if(bf) continue;
+    if (bf)
+      continue;
     // Connect points with lines
     for (int i = 0; i < 4; i++) {
-      c.draw_line3d_matrix((points[i]), (points[(i + 1) % 4]), RED,fov, aspectRatio, zNear, zFar);
-      c.draw_line3d_matrix((points[i + 4]), (points[((i + 1) % 4) + 4]), RED,fov, aspectRatio, zNear, zFar);
-      c.draw_line3d_matrix((points[i]), (points[i + 4]), RED,fov, aspectRatio, zNear, zFar);
+      c.draw_line3d_matrix((points[i]), (points[(i + 1) % 4]), RED, fov,
+                           aspectRatio, zNear, zFar);
+      c.draw_line3d_matrix((points[i + 4]), (points[((i + 1) % 4) + 4]), RED,
+                           fov, aspectRatio, zNear, zFar);
+      c.draw_line3d_matrix((points[i]), (points[i + 4]), RED, fov, aspectRatio,
+                           zNear, zFar);
     }
     c.Render_SDL();
     runBeforeRender(quit);

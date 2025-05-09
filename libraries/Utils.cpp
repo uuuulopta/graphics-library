@@ -1,4 +1,6 @@
 #include "../headers/Utils.h"
+#include "../headers/Canvas.h"
+#include <SDL2/SDL_events.h>
 #define WIDTH 800
 #define HEIGHT 800
 
@@ -51,21 +53,23 @@ vector<v3> Utils::getUniqueV3(vector<v3> vectors) {
 }
 
 v3 Utils::project(v3 p) { return normalized_to_screen(project_2d_3d(p)); }
-v3 Utils::project(v3 p,v3 camera){
-  float nx=p.x - camera.x;
-  float ny=p.y - camera.y;
-  float nz=p.z - camera.z;
-  return normalized_to_screen(v3(nx/nz,ny/nz,nz));
+v3 Utils::project(v3 p, v3 camera) {
+  float nx = p.x - camera.x;
+  float ny = p.y - camera.y;
+  float nz = p.z - camera.z;
+  return normalized_to_screen(v3(nx / nz, ny / nz, nz));
 }
-v2 Utils::projectMatrix(const v3& point, float fov, float aspectRatio, float zNear, float zFar) {
-    v2 projected;
+v2 Utils::projectMatrix(const v3 &point, float fov, float aspectRatio,
+                        float zNear, float zFar) {
+  v2 projected;
 
-    float tanHalfFOV = std::tan(fov / 2.0f);
-    projected.x = point.x / (aspectRatio * tanHalfFOV * ( point.z + 3 ));
-    projected.y = ( point.y ) / (tanHalfFOV * ( point.z +3 ));
-    // float zProjected = (zFar + zNear) / (zNear - zFar) * point.z + (2.0f * zFar * zNear) / (zNear - zFar);
+  float tanHalfFOV = std::tan(fov / 2.0f);
+  projected.x = point.x / (aspectRatio * tanHalfFOV * (point.z));
+  projected.y = (point.y) / (tanHalfFOV * (point.z));
+  // float zProjected = (zFar + zNear) / (zNear - zFar) * point.z + (2.0f * zFar
+  // * zNear) / (zNear - zFar);
 
-    return normalized_to_screen(projected);
+  return normalized_to_screen(projected);
 }
 
 Line Utils::project_line(Line l) {
@@ -73,9 +77,12 @@ Line Utils::project_line(Line l) {
   v3 p2 = Utils::project(v3(l.p2.x, l.p2.y, l.p2.z));
   return Line(p1, p2, l.colour);
 }
-v2 Utils::normalize_scale(v2 v,float scale){ return normalized_to_screen(v / scale); }
-v3 Utils::normalize_scale(v3 v,float scale){
-  return normalized_to_screen(Utils::project_2d_3d({v.x/scale,v.y/scale,v.z})); 
+v2 Utils::normalize_scale(v2 v, float scale) {
+  return normalized_to_screen(v / scale);
+}
+v3 Utils::normalize_scale(v3 v, float scale) {
+  return normalized_to_screen(
+      Utils::project_2d_3d({v.x / scale, v.y / scale, v.z}));
 }
 void Utils::renderText(SDL_Renderer *renderer, TTF_Font *font,
                        const string &text, int x, int y, SDL_Color color) {
@@ -88,4 +95,27 @@ void Utils::renderText(SDL_Renderer *renderer, TTF_Font *font,
 
   SDL_FreeSurface(textSurface);
   SDL_DestroyTexture(textTexture);
+}
+
+void Utils::drawCordSystem2d(vector<v2> xAxis, vector<v2> yAxis, Canvas &c,
+                             float scale, rgb colour) {
+  v2 leftX = Utils::normalize_scale(xAxis[0], scale);
+  v2 rightX = Utils::normalize_scale(xAxis.back(), scale);
+  v2 downY = Utils::normalize_scale(yAxis[0], scale);
+  v2 upY = Utils::normalize_scale(yAxis.back(), scale);
+  c.draw_line(leftX, rightX, 1, colour);
+  c.draw_line(downY, upY, 1, colour);
+  for (int i = 0; i < xAxis.size(); i++) {
+    c.draw_circle(Utils::normalize_scale(xAxis[i], scale), 2, 1, colour,
+                  colour);
+    c.draw_circle(Utils::normalize_scale(yAxis[i], scale), 2, 1, colour,
+                  colour);
+  }
+}
+
+void Utils::pollEventQuit() {
+  SDL_Event event;
+  SDL_PollEvent(&event);
+  if (event.type == SDL_QUIT)
+    exit(0);
 }

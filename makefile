@@ -6,11 +6,11 @@ OBJDIR = obj
 
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCS))
 
-COMMON_CFLAGS = -g -O0 -Wall
+COMMON_CFLAGS = -g -O0 -Wall 
 
 ifeq ($(OS),Windows_NT)
-	 CXX = g++
-	 INCLUDE_PATHS = -IC:/MinGW/include
+	 CXX = clang++ -target x86_64-w64-mingw32
+	 INCLUDE_PATHS = -IC:/MinGW/include -IC:/MinGW/include/c++
 	 LIBRARY_PATHS = -LC:/MinGW/lib
 	 LIBRARIES = -lmingw32 -lSDL2main -lSDL2 -lSDL2_ttf
 	 TARGET := $(TARGET).exe

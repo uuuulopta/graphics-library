@@ -104,9 +104,11 @@ void Canvas::draw_triangle3d(Triangle triangle, rgb colour) {
   // float aspectRatio = 1;    // Aspect ratio (width / height)
   // float zNear = 1.f;                  // Near clipping plane
   // float zFar = 10.0f;                 // Far clipping plane
-  // v3 p1 = Utils::projectMatrix(v3(triangle.p1.x, triangle.p1.y, triangle.p1.z), fov, aspectRatio, zNear, zFar);
-  // v3 p2 = Utils::projectMatrix(v3(triangle.p2.x, triangle.p2.y, triangle.p2.z), fov, aspectRatio, zNear, zFar);
-  // v3 p3 = Utils::projectMatrix(v3(triangle.p3.x, triangle.p3.y, triangle.p3.z), fov, aspectRatio, zNear, zFar);
+  // v3 p1 = Utils::projectMatrix(v3(triangle.p1.x, triangle.p1.y,
+  // triangle.p1.z), fov, aspectRatio, zNear, zFar); v3 p2 =
+  // Utils::projectMatrix(v3(triangle.p2.x, triangle.p2.y, triangle.p2.z), fov,
+  // aspectRatio, zNear, zFar); v3 p3 = Utils::projectMatrix(v3(triangle.p3.x,
+  // triangle.p3.y, triangle.p3.z), fov, aspectRatio, zNear, zFar);
   v3 p1 = Utils::project(v3(triangle.p1.x, triangle.p1.y, triangle.p1.z));
   v3 p2 = Utils::project(v3(triangle.p2.x, triangle.p2.y, triangle.p2.z));
   v3 p3 = Utils::project(v3(triangle.p3.x, triangle.p3.y, triangle.p3.z));
@@ -171,7 +173,9 @@ void Canvas::draw_triangle3d(Triangle triangle, rgb colour) {
   }
 }
 
-vector<v3> Canvas::draw_line3d_matrix(v3 p1, v3 p2, rgb colour,float fov,float aspectRatio,float zNear,float zFar) {
+vector<v3> Canvas::draw_line3d_matrix(v3 p1, v3 p2, rgb colour, float fov,
+                                      float aspectRatio, float zNear,
+                                      float zFar) {
   p1 = Utils::projectMatrix(p1, fov, aspectRatio, zNear, zFar);
   p2 = Utils::projectMatrix(p2, fov, aspectRatio, zNear, zFar);
   return draw_line(p1.x, p1.y, p2.x, p2.y, 1, colour, v2{p1.z, p2.z});
@@ -183,8 +187,8 @@ vector<v3> Canvas::draw_line3d(v3 p1, v3 p2, rgb colour) {
   return draw_line(p1.x, p1.y, p2.x, p2.y, 1, colour, v2{p1.z, p2.z});
 }
 
-void Canvas::draw_line(v2 p1,v2 p2,int thickness, rgb colour){
-  draw_line(p1.x,p1.y,p2.x,p2.y,thickness,colour);
+void Canvas::draw_line(v2 p1, v2 p2, int thickness, rgb colour) {
+  draw_line(p1.x, p1.y, p2.x, p2.y, thickness, colour);
 }
 
 vector<v3> Canvas::draw_line(float x1, float y1, float x2, float y2,
@@ -271,7 +275,8 @@ vector<v3> Canvas::draw_line(float x1, float y1, float x2, float y2,
         currZ += zInc;
       }
     }
-    if (zInfo.x != 0 && zInfo.y != 0) return vals;
+    if (zInfo.x != 0 && zInfo.y != 0)
+      return vals;
     return vals;
     // if (thickness > 1 && false) {
     //
@@ -327,8 +332,6 @@ void Canvas::fill_triangle(const Triangle &trig, rgb colour) {
 void Canvas::fill_between_lines(Line line1, Line line2, rgb colour) {
   float bottomY;
   float topY;
-  line1.calculate();
-  line2.calculate();
   if (line1.bottomY >= line2.bottomY)
     bottomY = line1.bottomY;
   else
@@ -481,9 +484,8 @@ void Canvas::drawAllCircleSides(float x, float y, Circle circle, int fill,
   }
 }
 
-
-void Canvas::draw_circle(v2 v, float r, int fill, rgb colour,rgb fillColour){
-  draw_circle(v.x,v.y,r,fill,colour,fillColour);
+void Canvas::draw_circle(v2 v, float r, int fill, rgb colour, rgb fillColour) {
+  draw_circle(v.x, v.y, r, fill, colour, fillColour);
 }
 void Canvas::draw_circle(float xc, float yc, float r, int fill, rgb colour,
                          rgb fillColour) {
@@ -502,6 +504,7 @@ void Canvas::draw_circle(float xc, float yc, float r, int fill, rgb colour,
     drawAllCircleSides(x, y, circle, fill, fillColour);
   }
 }
-void Canvas::renderText(TTF_Font *font, const string &text, int x, int y, SDL_Color color){
-  Utils::renderText(renderer, font, text, x  , HEIGHT - y , color);
+void Canvas::renderText(TTF_Font *font, const string &text, int x, int y,
+                        SDL_Color color) {
+  Utils::renderText(renderer, font, text, x, HEIGHT - y, color);
 }
